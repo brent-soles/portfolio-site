@@ -2,11 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   // Module specifies loaders for
   // respective components
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      },
       {
         test: /\.(css|scss)$/,
         use: [
@@ -15,10 +20,6 @@ module.exports = {
           'sass-loader'
         ]
       },
-      // The babel loader will look for the
-      // specified .babelrc file to
-      // see which babel specific loaders
-      // should be used
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -28,8 +29,12 @@ module.exports = {
       }
     ],
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js']
+  },
   output: {
-    filename: 'app.js',
+    filename: 'bundle.js',
+    chunkFilename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
   devServer: {
